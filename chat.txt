@@ -8,6 +8,9 @@
 # Messages: one per line, as  Name: text
 # A line without a "Name:" prefix continues the previous message on a new line.
 # Lines starting with # are ignored.
+#
+# Scripted replies: everything below the "--- replies ---" line is not shown
+# at first. Each time you send a message, the next reply appears a second later.
 
 me: Dan
 title: Sarah Chen
@@ -18,3 +21,8 @@ Sarah: I would love to learn more!
 Dan: Glad to hear it! Let's jump on a quick call next week. 
 Dan: Let me know what works for you.
 Sarah: I'm available on Wed the 18th between 1 pm and 4pm pst
+
+--- replies ---
+
+Sarah: Perfect, I just sent you an invite for 2 pm.
+Sarah: Looking forward to it!

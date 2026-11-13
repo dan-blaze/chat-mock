@@ -103,6 +103,11 @@
   .row.me:not(.last) .bubble { border-bottom-right-radius: 6px; }
   .row.new .bubble { animation: pop .18s ease-out; }
   @keyframes pop { from { transform: translateY(6px) scale(.97); opacity: 0; } }
+  .dots { display: flex; gap: 4px; padding: 14px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+  .dots i:nth-child(2) { animation-delay: .15s; }
+  .dots i:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
   .notice { margin: auto; color: var(--muted); text-align: center; padding: 24px; }
 
   form {
@@ -160,22 +165,28 @@ const COLORS = ['#f97316', '#8b5cf6', '#0ea5e9', '#ec4899', '#14b8a6', '#eab308'
 
 let settings = {};
 let messages = [];   // { name, text, isNew }
+let replies = [];    // scripted replies, played one per message sent
+let typing = [];     // names currently "typing"
+const REPLY_DELAY = 1000;
 
 function parse(text) {
-  const out = { settings: {}, messages: [] };
+  const out = { settings: {}, messages: [], replies: [] };
+  let target = out.messages;
   for (const raw of text.replace(/\r/g, '').split('\n')) {
     if (raw.trimStart().startsWith('#')) continue;
+    // A line starting with --- ends the history; what follows are scripted replies.
+    if (raw.startsWith('---')) { target = out.replies; continue; }
     // "Name: text" at the very start of a line begins a new message.
     const m = raw.match(/^([^\s:][^:]{0,39}):(?:\s+(.*)|\s*)$/);
     if (m) {
       const key = m[1].trim(), value = (m[2] || '').trim();
-      if (!out.messages.length && SETTINGS.includes(key.toLowerCase())) {
+      if (target === out.messages && !target.length && SETTINGS.includes(key.toLowerCase())) {
         out.settings[key.toLowerCase()] = value;
       } else {
-        out.messages.push({ name: key, text: value });
+        target.push({ name: key, text: value });
       }
-    } else if (out.messages.length && raw.trim()) {
-      const last = out.messages[out.messages.length - 1];
+    } else if (target.length && raw.trim()) {
+      const last = target[target.length - 1];
       last.text += (last.text ? '\n' : '') + raw.trim();
     }
   }
@@ -230,6 +241,15 @@ function render() {
     row.append(stack);
     box.append(row);
   });
+  if (typing.length) {
+    const row = document.createElement('div');
+    row.className = 'row them first last';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble dots';
+    bubble.innerHTML = '<i></i><i></i><i></i>';
+    row.append(avatar(typing[0], true), bubble);
+    box.append(row);
+  }
   box.scrollTop = box.scrollHeight;
 }
 
@@ -259,6 +279,15 @@ $('form').addEventListener('submit', e => {
   messages.push({ name: settings.me || 'Me', text, isNew: true });
   input.value = '';
   resize();
+  const reply = replies.shift();
+  if (reply) {
+    typing.push(reply.name);
+    setTimeout(() => {
+      typing.shift();
+      messages.push({ ...reply, isNew: true });
+      render();
+    }, REPLY_DELAY);
+  }
   render();
   input.focus();
 });
@@ -269,6 +298,7 @@ fetch(file + '?t=' + Date.now(), { cache: 'no-store' })
     const parsed = parse(text);
     settings = parsed.settings;
     messages = parsed.messages;
+    replies = parsed.replies;
     if (!settings.me) settings.me = 'Me';
     render();
   })
