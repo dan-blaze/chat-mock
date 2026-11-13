@@ -13,8 +13,8 @@ me: Dan
 title: Sarah Chen
 subtitle: Active now
 
-Sarah: Hey Dan, thanks for the demo yesterday!
-Sarah: The team loved it. A couple of people asked how long setup takes.
-Dan: Glad to hear it! Setup is usually under ten minutes.
-Dan: Want me to send over the getting-started guide?
-Sarah: Yes please. Also, could you remind me what the pricing looks like for 25 seats?
+Sarah: Hey Dan, thanks for reaching out. Your product looks interesting.
+Sarah: I would love to learn more!
+Dan: Glad to hear it! Let's jump on a quick call next week. 
+Dan: Let me know what works for you.
+Sarah: I'm available on Wed the 18th after 12noon pst
