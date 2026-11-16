@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Text Blaze + Zapier demos</title>
+<style>
+  :root {
+    --page: #eef0f4;
+    --surface: #ffffff;
+    --line: #e2e5ea;
+    --text: #14171c;
+    --muted: #6b7280;
+    --zap: #ff4f00;
+    --zap-soft: #fff1eb;
+    --shadow: 0 12px 40px rgba(20, 23, 28, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0c0d10;
+      --surface: #16181d;
+      --line: #2a2e36;
+      --text: #f1f3f6;
+      --muted: #8b93a1;
+      --zap: #ff6a2b;
+      --zap-soft: #2b1a12;
+      --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 16px 64px;
+    background: var(--page); color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -.02em; }
+  h1 span { color: var(--zap); }
+  .lede { margin: 0 0 28px; color: var(--muted); max-width: 60ch; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  li {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: var(--shadow); padding: 20px 22px;
+    display: grid; grid-template-columns: 44px 1fr; gap: 4px 16px;
+  }
+  .num {
+    grid-row: span 3; width: 44px; height: 44px; border-radius: 12px;
+    background: var(--zap-soft); color: var(--zap);
+    display: grid; place-items: center; font-weight: 700; font-size: 18px;
+  }
+  h2 { margin: 0; font-size: 17px; }
+  p { margin: 0; color: var(--muted); }
+  .links { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+  a.open {
+    display: inline-block; text-decoration: none; font-weight: 600;
+    background: var(--zap); color: #fff; border-radius: 999px; padding: 6px 16px;
+  }
+  a.open:hover { filter: brightness(1.07); }
+  kbd {
+    font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--zap-soft); color: var(--zap); border-radius: 6px; padding: 2px 8px;
+  }
+  .type { color: var(--muted); font-size: 13.5px; }
+  @media (max-width: 520px) { li { grid-template-columns: 1fr; } .num { grid-row: auto; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Text Blaze <span>+ Zapier</span></h1>
+  <p class="lede">Four demos. Open a page, click into a text box and type the shortcut. Each snippet runs a Zap through a webhook.</p>
+
+  <ol>
+    <li>
+      <div class="num">1</div>
+      <h2>Capture data from the current page and pass it to a Zap</h2>
+      <p>An order form open as a document. The snippet reads the customer and order details off the page, lets you review them, and sends them to a Zap.</p>
+      <div class="links"><a class="open" href="order.html">Open the order</a><span class="type">type <kbd>z.order</kbd> in the Notes box</span></div>
+    </li>
+    <li>
+      <div class="num">2</div>
+      <h2>Turn interactions into Zaps</h2>
+      <p>A chat where a task comes up, then a meeting. One snippet logs the task, another schedules the meeting. Both trigger a Zap.</p>
+      <div class="links"><a class="open" href="./?chat=zapier_tasks">Open the chat</a><span class="type">type <kbd>z.task</kbd>, send, then <kbd>z.mtg</kbd></span></div>
+    </li>
+    <li>
+      <div class="num">3</div>
+      <h2>Fill forms with data from Zapier</h2>
+      <p>A new customer form. The snippet triggers a Zap, the Zap sends the customer's details back, and the snippet fills the form.</p>
+      <div class="links"><a class="open" href="form.html">Open the form</a><span class="type">type <kbd>z.fill</kbd> in First name</span></div>
+    </li>
+    <li>
+      <div class="num">4</div>
+      <h2>Draft ad-hoc messages</h2>
+      <p>A customer question in chat. The snippet reads the question, takes a few inputs, and a Zap drafts the reply. You edit the draft, then insert it.</p>
+      <div class="links"><a class="open" href="./?chat=zapier_draft">Open the chat</a><span class="type">type <kbd>z.draft</kbd> in the message box</span></div>
+    </li>
+  </ol>
+</main>
+</body>
+</html>

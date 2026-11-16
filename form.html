@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>New customer account</title>
+<style>
+  :root {
+    --page: #eef0f4;
+    --surface: #ffffff;
+    --line: #dfe2e8;
+    --text: #14171c;
+    --muted: #6b7280;
+    --field: #ffffff;
+    --accent: #2f6bff;
+    --accent-soft: #e8efff;
+    --ok: #15803d;
+    --ok-soft: #e7f6ec;
+    --shadow: 0 20px 60px rgba(20, 23, 28, .10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0c0d10;
+      --surface: #16181d;
+      --line: #2a2e36;
+      --text: #f1f3f6;
+      --muted: #8b93a1;
+      --field: #1d2026;
+      --accent: #5b8cff;
+      --accent-soft: #1c2740;
+      --ok: #4ade80;
+      --ok-soft: #12261a;
+      --shadow: 0 20px 60px rgba(0, 0, 0, .5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--page); color: var(--text);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 16px 56px;
+  }
+  .card {
+    max-width: 760px; margin: 0 auto;
+    background: var(--surface); border-radius: 18px; box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  header { padding: 22px 28px 18px; border-bottom: 1px solid var(--line); }
+  .crumb { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+  h1 { margin: 0; font-size: 22px; letter-spacing: -.01em; }
+  .hint { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+  kbd {
+    font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--accent-soft); color: var(--accent); border-radius: 5px; padding: 1px 6px;
+  }
+  form { padding: 22px 28px 26px; }
+  fieldset { border: 0; margin: 0 0 22px; padding: 0; min-width: 0; }
+  legend {
+    padding: 0; margin-bottom: 12px;
+    font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+  .grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px 16px; }
+  .col-6 { grid-column: span 6; } .col-3 { grid-column: span 3; } .col-2 { grid-column: span 2; }
+  @media (max-width: 560px) { .col-3, .col-2 { grid-column: span 6; } form, header { padding-left: 18px; padding-right: 18px; } }
+  label.field { display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 600; }
+  input[type=text], input[type=email], input[type=tel], input[type=number], textarea {
+    width: 100%; font: inherit; font-weight: 400; color: var(--text);
+    background: var(--field); border: 1px solid var(--line); border-radius: 10px;
+    padding: 9px 12px; outline: none;
+  }
+  textarea { resize: vertical; min-height: 76px; }
+  input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .plans { display: flex; flex-wrap: wrap; gap: 10px; }
+  .plan {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px 8px 12px;
+    font-weight: 600; font-size: 14px; cursor: pointer; background: var(--field);
+  }
+  .plan input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+  .plan:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .actions { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+  button {
+    font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 18px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--field); color: var(--text);
+  }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:active { transform: translateY(1px); }
+  .saved {
+    display: none; margin: 0 28px 26px; padding: 14px 16px; border-radius: 12px;
+    background: var(--ok-soft); color: var(--ok); font-weight: 600;
+  }
+  .saved.show { display: block; }
+  .saved pre {
+    margin: 10px 0 0; font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--text); font-weight: 400; white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <header>
+    <div class="crumb">Customers / New</div>
+    <h1>New customer account</h1>
+    <p class="hint">Demo: click in <b>First name</b> and type <kbd>z.fill</kbd>. Text Blaze asks Zapier for the customer's details, then fills this form.</p>
+  </header>
+
+  <form id="account-form" autocomplete="off" novalidate>
+    <fieldset>
+      <legend>Contact</legend>
+      <div class="grid">
+        <label class="field col-3">First name <input type="text" id="first-name" name="first_name" autofocus></label>
+        <label class="field col-3">Last name <input type="text" id="last-name" name="last_name"></label>
+        <label class="field col-6">Company <input type="text" id="company" name="company"></label>
+        <label class="field col-3">Email <input type="email" id="email" name="email"></label>
+        <label class="field col-3">Phone <input type="tel" id="phone" name="phone"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Billing address</legend>
+      <div class="grid">
+        <label class="field col-6">Street address <input type="text" id="address" name="address"></label>
+        <label class="field col-2">City <input type="text" id="city" name="city"></label>
+        <label class="field col-2">State <input type="text" id="state" name="state"></label>
+        <label class="field col-2">ZIP <input type="text" id="zip" name="zip"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Plan</legend>
+      <div class="grid">
+        <div class="col-6 plans" role="radiogroup" aria-label="Plan">
+          <label class="plan"><input type="radio" name="plan" id="plan-starter" value="Starter"> Starter</label>
+          <label class="plan"><input type="radio" name="plan" id="plan-pro" value="Pro"> Pro</label>
+          <label class="plan"><input type="radio" name="plan" id="plan-business" value="Business"> Business</label>
+        </div>
+        <label class="field col-2">Seats <input type="text" inputmode="numeric" id="seats" name="seats"></label>
+        <label class="field col-6">Notes <textarea id="notes" name="notes"></textarea></label>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="primary" type="submit" id="save">Create account</button>
+      <button type="reset" id="clear">Clear</button>
+    </div>
+  </form>
+
+  <div class="saved" id="saved" role="status">
+    Account created (demo only, nothing was saved).
+    <pre id="saved-data"></pre>
+  </div>
+</div>
+
+<script>
+// Demo page: nothing is sent anywhere. Submitting shows what the form holds.
+const form = document.getElementById('account-form');
+const saved = document.getElementById('saved');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form).entries());
+  document.getElementById('saved-data').textContent = JSON.stringify(data, null, 2);
+  saved.classList.add('show');
+  saved.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+form.addEventListener('reset', () => saved.classList.remove('show'));
+</script>
+</body>
+</html>

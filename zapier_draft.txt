@@ -1,0 +1,21 @@
+# Zapier demo 4: draft ad-hoc messages.
+# Open with ?chat=zapier_draft
+#
+# Flow: Maya asks a question. Type z.draft in the message box. The snippet
+# reads her question from the page, takes a few inputs from you, and triggers
+# a Zap that drafts the reply. The draft comes back into the snippet, where
+# you can edit it before it is inserted at the cursor.
+#
+# Format: see chat.txt for the full notes on settings, messages and replies.
+
+me: Dan
+title: Maya Patel
+subtitle: Customer since 2024
+
+Maya: Hi, I need some help with our account.
+Dan: Hi Maya, of course. What's going on?
+Maya: We upgraded to the Team plan last week, but it looks like we were charged twice for November. Can you check? Also, how do I add two more seats for the people joining next month?
+
+--- replies ---
+
+Maya: That clears it up, thanks so much for the quick answer!

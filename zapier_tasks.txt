@@ -1,0 +1,27 @@
+# Zapier demo 2: turn interactions into Zaps.
+# Open with ?chat=zapier_tasks
+#
+# Flow:
+#   1. Sarah asks for something with a deadline. Type z.task to log the task
+#      (name, owner, details, due date). It is written into the chat and sent
+#      to a Zapier webhook.
+#   2. Sarah then asks for a meeting. Type z.mtg (or z.meet) to schedule it
+#      through Zapier, then reply.
+#
+# Format: see chat.txt for the full notes on settings, messages and replies.
+
+me: Dan
+title: Sarah Chen
+subtitle: Active now
+
+Sarah: Hi Dan, thanks for the walkthrough yesterday. The team loved it.
+Dan: Great to hear! Happy to help with next steps.
+Sarah: Could you send over a pricing proposal for 25 seats by Friday? Our CFO wants to see annual and monthly options.
+
+--- replies ---
+
+Sarah: Perfect, thank you. One more thing: can we set up a 30 minute call with our IT lead? Wed the 18th at 1pm PST works for us. His email is raj@acme.com
+
+--- replies ---
+
+Sarah: Got the invite. See you then!

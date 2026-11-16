@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PO-10482.pdf</title>
+<style>
+  /* A page that looks like a browser PDF viewer. The document is real text,
+     so it can be selected, searched and read by a Text Blaze {site} command. */
+  :root {
+    --chrome: #323639;
+    --chrome-line: #1f2123;
+    --chrome-text: #f1f3f4;
+    --chrome-muted: #9aa0a6;
+    --canvas: #525659;
+    --paper: #ffffff;
+    --ink: #1b1d21;
+    --ink-soft: #5b6270;
+    --rule: #d9dce1;
+    --accent: #1f4e79;
+    --panel: #2a2d30;
+    --field: #3c4043;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--canvas);
+    color: var(--chrome-text);
+    font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex; flex-direction: column;
+  }
+
+  /* Viewer toolbar */
+  .toolbar {
+    flex: none; height: 56px;
+    background: var(--chrome); border-bottom: 1px solid var(--chrome-line);
+    display: flex; align-items: center; gap: 16px; padding: 0 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .35); z-index: 2;
+  }
+  .toolbar .file { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+  .toolbar .file svg { flex: none; }
+  .toolbar .name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .toolbar .center { display: flex; align-items: center; gap: 14px; color: var(--chrome-text); }
+  .toolbar .pill { background: #191b1c; border-radius: 4px; padding: 3px 9px; font-variant-numeric: tabular-nums; }
+  .toolbar .sep { width: 1px; height: 22px; background: #5f6368; }
+  .toolbar .right { flex: 1; display: flex; justify-content: flex-end; gap: 4px; }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: 0; background: transparent;
+    color: var(--chrome-text); display: grid; place-items: center; cursor: default;
+  }
+  .icon-btn:hover { background: rgba(255, 255, 255, .08); }
+  .muted { color: var(--chrome-muted); }
+
+  /* Body: page canvas + notes panel */
+  .viewer { flex: 1; min-height: 0; display: flex; }
+  .canvas { flex: 1; min-width: 0; overflow: auto; padding: 24px 16px 48px; }
+  .page {
+    width: 816px; max-width: 100%; min-height: 1056px; margin: 0 auto;
+    background: var(--paper); color: var(--ink);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+    padding: 64px 68px;
+    font: 13.5px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    user-select: text;
+  }
+  .notes {
+    flex: none; width: 300px; background: var(--panel); border-left: 1px solid var(--chrome-line);
+    display: flex; flex-direction: column; padding: 16px; gap: 10px;
+  }
+  .notes h2 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--chrome-muted); }
+  .notes textarea {
+    flex: none; height: 180px; resize: vertical;
+    background: var(--field); color: var(--chrome-text);
+    border: 1px solid transparent; border-radius: 8px; padding: 10px 12px;
+    font: inherit; outline: none;
+  }
+  .notes textarea:focus { border-color: #8ab4f8; }
+  .notes textarea::placeholder { color: var(--chrome-muted); }
+  .notes p { margin: 0; font-size: 12.5px; color: var(--chrome-muted); }
+  .notes kbd {
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: #191b1c; color: var(--chrome-text); border-radius: 4px; padding: 1px 6px;
+  }
+  @media (max-width: 900px) {
+    .viewer { flex-direction: column; }
+    .notes { width: auto; border-left: 0; border-top: 1px solid var(--chrome-line); }
+    .page { padding: 36px 24px; min-height: 0; }
+    .toolbar .center { display: none; }
+  }
+
+  /* The document */
+  .doc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .vendor { font-size: 12.5px; color: var(--ink-soft); }
+  .vendor strong { display: block; font-size: 17px; color: var(--accent); letter-spacing: .01em; margin-bottom: 2px; }
+  .doc-title { text-align: right; }
+  .doc-title h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: .08em; font-weight: 700; color: var(--accent); }
+  dl.meta { margin: 0; display: grid; grid-template-columns: auto auto; gap: 2px 14px; justify-content: end; font-size: 12.5px; }
+  dl.meta dt { color: var(--ink-soft); text-align: right; }
+  dl.meta dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  hr { border: 0; border-top: 2px solid var(--accent); margin: 26px 0 22px; }
+  h2.section {
+    margin: 0 0 10px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700;
+  }
+  dl.fields { margin: 0 0 30px; display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px; }
+  dl.fields dt { color: var(--ink-soft); }
+  dl.fields dd { margin: 0; font-weight: 500; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+  th {
+    text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    background: #eef2f6; color: var(--ink-soft); padding: 9px 10px; border-bottom: 1px solid var(--rule);
+  }
+  td { padding: 12px 10px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+  .num { text-align: right; }
+  .totals { margin-left: auto; width: 260px; display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; }
+  .totals .grand { font-weight: 700; font-size: 15px; border-top: 2px solid var(--ink); padding-top: 8px; margin-top: 4px; }
+  .foot { margin-top: 56px; display: flex; justify-content: space-between; gap: 32px; font-size: 12px; color: var(--ink-soft); }
+  .sign { width: 240px; border-top: 1px solid var(--ink); padding-top: 6px; }
+  .terms { max-width: 330px; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="file">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#ea4335" d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path fill="#fff" opacity=".85" d="M14 2v5h5z"/><text x="12" y="17" text-anchor="middle" font-size="6" font-weight="700" fill="#fff" font-family="Arial">PDF</text></svg>
+    <span class="name">PO-10482.pdf</span>
+  </div>
+  <div class="center">
+    <span><span class="pill">1</span> <span class="muted">/ 1</span></span>
+    <span class="sep"></span>
+    <span class="muted">&minus;</span><span class="pill">100%</span><span class="muted">+</span>
+  </div>
+  <div class="right">
+    <button class="icon-btn" type="button" aria-label="Download" tabindex="-1">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>
+    </button>
+    <button class="icon-btn" type="button" aria-label="Print" tabindex="-1">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2M7 14h10v6H7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="viewer">
+  <div class="canvas">
+    <article class="page" id="document">
+      <div class="doc-head">
+        <div class="vendor">
+          <strong>Brightline Office Supply</strong>
+          400 Harbor Way, Suite 210<br>
+          Seattle, WA 98104<br>
+          orders@brightline.example
+        </div>
+        <div class="doc-title">
+          <h1>ORDER FORM</h1>
+          <dl class="meta">
+            <dt>Order no.</dt><dd id="order-number">PO-10482</dd>
+            <dt>Order date</dt><dd id="order-date">November 12, 2026</dd>
+          </dl>
+        </div>
+      </div>
+
+      <hr>
+
+      <h2 class="section">Customer</h2>
+      <dl class="fields">
+        <dt>Customer name</dt><dd id="customer-name">Priya Raman</dd>
+        <dt>Address</dt><dd id="customer-address">2148 Alder Street, Portland, OR 97205</dd>
+        <dt>Phone</dt><dd id="customer-phone">(503) 555-0142</dd>
+      </dl>
+
+      <h2 class="section">Order</h2>
+      <table>
+        <thead>
+          <tr><th>Item ID</th><th>Item name</th><th class="num">Quantity</th><th class="num">Price</th><th class="num">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="item-id">SD-4410</td>
+            <td id="item-name">Standing Desk Pro</td>
+            <td class="num" id="item-quantity">3</td>
+            <td class="num" id="item-price">$489.00</td>
+            <td class="num" id="item-amount">$1,467.00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="totals">
+        <span>Subtotal</span><span class="num">$1,467.00</span>
+        <span>Shipping</span><span class="num">$0.00</span>
+        <span class="grand">Total</span><span class="num grand" id="order-total">$1,467.00</span>
+      </div>
+
+      <div class="foot">
+        <div class="terms">Payment due within 30 days of delivery. Orders ship within 5 business days of confirmation.</div>
+        <div class="sign">Customer signature</div>
+      </div>
+    </article>
+  </div>
+
+  <aside class="notes">
+    <h2>Notes</h2>
+    <textarea id="notes" placeholder="Add a note about this document" autofocus></textarea>
+    <p>Demo: click in the box above and type <kbd>z.order</kbd>. Text Blaze reads the order from the page and sends it to Zapier.</p>
+  </aside>
+</div>
+
+</body>
+</html>
