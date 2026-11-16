@@ -1,0 +1,31 @@
+# The conversation so far. Edit this file, save, refresh the page.
+#
+# Settings (optional, must come before the first message):
+#   me:       your name, exactly as it appears in the messages below
+#   title:    the name shown in the header (defaults to the other person)
+#   subtitle: the small line under the title
+#
+# Messages: one per line, as  Name: text
+# A line without a "Name:" prefix continues the previous message on a new line.
+# Lines starting with # are ignored.
+#
+# Scripted replies: everything below the "--- replies ---" line is not shown
+# at first. Each time you send a message, the next reply appears a second later.
+
+me: Dan
+title: Sarah Chen
+subtitle: Active now
+
+Sarah: Hey Dan, thanks for reaching out. Your product looks interesting.
+Sarah: I would love to learn more!
+Dan: Glad to hear it! Let's jump on a quick call next week. 
+Dan: Let me know what works for you.
+Sarah: I'm available on Wed the 18th between 1 pm and 4pm pst
+
+--- replies ---
+
+Sarah: 1pm works perfectly for me
+
+--- replies ---
+
+Sarah: sara@acme.com
